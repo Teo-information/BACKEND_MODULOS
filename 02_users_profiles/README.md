@@ -1,57 +1,65 @@
 # Estructura de 02_users_profiles
 
-Esta carpeta está organizada siguiendo el patrón **MVC (Modelo-Vista-Controlador)** y agrupada en tres módulos principales: **users**, **profiles** y **verification**. Cada módulo responde a una necesidad funcional distinta dentro de la gestión de usuarios y perfiles del sistema.
+Esta carpeta ahora está organizada según las **Historias de Usuario (HU)** principales del módulo de gestión de usuarios y perfiles. Cada subcarpeta corresponde a una funcionalidad clave del sistema, facilitando la identificación y el mantenimiento del código relacionado con cada requerimiento.
 
-## ¿Por qué tres partes?
+## Organización por Historias de Usuario (HU)
 
-- **users/**: Contiene todo lo relacionado con la gestión de usuarios (CRUD, servicios de cambio de contraseña, primer login, etc.). Aquí se centralizan las operaciones principales sobre los usuarios del sistema.
-- **profiles/**: Gestiona la información de perfil de los usuarios, como la edición de datos personales y la gestión de imágenes de perfil. Se separa para mantener la lógica de perfil independiente de la gestión general de usuarios.
-- **verification/**: Incluye la lógica de verificación de usuarios, recuperación de contraseñas y envío de correos de verificación. Se aísla para facilitar el mantenimiento y la escalabilidad de los procesos de autenticación y seguridad.
+- **HU01_UserCRUD/**: Gestión completa de usuarios (alta, baja, modificación, consulta). Incluye controladores, modelos, requests, resources y servicios para el CRUD de usuarios.
+- **HU02_ProfileManagement/**: Gestión y edición de perfil de usuario. Incluye controladores, servicios y requests para la edición de datos personales y gestión de imágenes de perfil.
+- **HU03_ChangePassword/**: Cambio y recuperación de contraseña. Incluye controladores, servicios y requests para el cambio y recuperación de contraseñas, así como lógica de primer login.
+- **HU04_EmailVerification/**: Verificación de email de usuario. Incluye controladores, servicios, requests, mails, modelos y vistas para la verificación de correo electrónico y procesos relacionados.
+- **HU05_UserSearchFilters/**: Búsqueda y filtros de usuarios. Incluye requests y servicios para la búsqueda avanzada y filtrado de usuarios.
 
-## Estructura MVC
+## Estructura interna de cada HU
 
-Cada módulo sigue el patrón MVC, distribuyendo los archivos en:
+Cada HU puede contener las siguientes carpetas según corresponda:
 
-- **Controllers/**: Controladores que reciben las solicitudes HTTP, validan datos y coordinan la lógica de negocio.
-- **Models/**: Representan las entidades y estructuras de datos del sistema (por ejemplo, User.php).
-- **Requests/**: Clases para la validación de datos de entrada en las solicitudes (por ejemplo, StoreUserRequest.php).
-- **Resources/**: Transforman los modelos en respuestas JSON estructuradas para la API (por ejemplo, UserResource.php, UserCollection.php).
-- **Services/**: Contienen la lógica de negocio reutilizable y operaciones complejas (por ejemplo, UserService.php, ChangePasswordService.php).
-- **Mails/** (solo en verification): Plantillas y clases para el envío de correos electrónicos.
-- **Views/** (solo en verification): Vistas Blade para correos electrónicos y procesos de verificación.
+- **Controllers/**: Controladores que gestionan las solicitudes HTTP.
+- **Models/**: Modelos de datos.
+- **Requests/**: Validaciones de datos de entrada.
+- **Resources/**: Transformadores de respuestas API.
+- **Services/**: Lógica de negocio y operaciones complejas.
+- **Mails/**: Clases para el envío de correos electrónicos (solo HU04).
+- **Views/**: Vistas Blade para correos electrónicos y procesos de verificación (solo HU04).
 
 ## Ejemplo de estructura
 
 ```
 02_users_profiles/
-  ├── users/
-  │   ├── Controllers/         # Controladores de usuarios
-  │   ├── Models/              # Modelos de datos de usuario
-  │   ├── Requests/            # Validaciones de usuario
-  │   ├── Resources/           # Formateo de respuestas de usuario
-  │   ├── Services/            # Lógica de negocio de usuario
-  │   └── #HU01-GestionUsuarios-CRUD/ # Documentación de la historia de usuario
-  ├── profiles/
-  │   ├── Controllers/         # Controladores de perfil
-  │   ├── Models/              # Modelos de perfil (si aplica)
-  │   ├── Requests/            # Validaciones de perfil
-  │   ├── Services/            # Lógica de negocio de perfil
-  ├── verification/
-  │   ├── Controllers/         # Controladores de verificación (si aplica)
-  │   ├── Models/              # Modelos de verificación
-  │   ├── Services/            # Lógica de negocio de verificación
-  │   ├── Mails/               # Clases de correo
-  │   └── Views/               # Vistas Blade para emails
+  ├── HU01_UserCRUD/
+  │   ├── Controllers/
+  │   ├── Models/
+  │   ├── Requests/
+  │   ├── Resources/
+  │   └── Services/
+  ├── HU02_ProfileManagement/
+  │   ├── Controllers/
+  │   ├── Requests/
+  │   └── Services/
+  ├── HU03_ChangePassword/
+  │   ├── Controllers/
+  │   ├── Requests/
+  │   └── Services/
+  ├── HU04_EmailVerification/
+  │   ├── Controllers/
+  │   ├── Requests/
+  │   ├── Services/
+  │   ├── Mails/
+  │   ├── Models/
+  │   └── Views/
+  └── HU05_UserSearchFilters/
+      ├── Requests/
+      └── Services/
 ```
 
 ## ¿Qué hace cada archivo?
 
-- **UserController.php, ProfileController.php, etc.**: Gestionan las peticiones y respuestas HTTP.
-- **User.php, UserVerificationCode.php, etc.**: Definen la estructura y relaciones de los datos.
-- **StoreUserRequest.php, UpdateProfileRequest.php, etc.**: Validan los datos recibidos en las solicitudes.
-- **UserResource.php, UserCollection.php, etc.**: Transforman los modelos en respuestas API.
-- **UserService.php, ChangePasswordService.php, etc.**: Implementan la lógica de negocio y operaciones complejas.
-- **VerificationEmail.php**: Define el contenido y destinatarios de los correos de verificación.
-- **verification.blade.php, password-restore.blade.php**: Plantillas visuales para los correos electrónicos enviados a los usuarios.
+- **Controllers/**: Gestionan las peticiones y respuestas HTTP.
+- **Models/**: Definen la estructura y relaciones de los datos.
+- **Requests/**: Validan los datos recibidos en las solicitudes.
+- **Resources/**: Transforman los modelos en respuestas API.
+- **Services/**: Implementan la lógica de negocio y operaciones complejas.
+- **Mails/**: Definen el contenido y destinatarios de los correos de verificación.
+- **Views/**: Plantillas visuales para los correos electrónicos enviados a los usuarios.
 
-Esta organización facilita el mantenimiento, la escalabilidad y la comprensión del código, permitiendo que cada parte del sistema evolucione de forma independiente y ordenada. 
+Esta organización por historias de usuario facilita el mantenimiento, la escalabilidad y la comprensión del código, permitiendo que cada funcionalidad evolucione de forma independiente y ordenada. 

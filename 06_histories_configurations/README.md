@@ -1,129 +1,111 @@
-# Módulo 06 - Historiales y Configuraciones 📋
+# Servicios
 
-## **Responsabilidades**
-Modelo History, modelos de configuración (DocumentType, PaymentType, PredeterminedPrice), CRUD de historiales, gestión de configuraciones y relación con pacientes.
+Los servicios de este módulo encapsulan la lógica de negocio de cada entidad, manteniendo los controladores delgados y reutilizables. Cada uno está documentado con PHPDoc:
 
-## **Meta: Lograr MVC con APIs para React**
+- **DocumentTypeService**: Gestiona la lógica para tipos de documento (crear, restaurar, actualizar, eliminar, listar). Valida unicidad, soft delete y restauración.
+- **PaymentTypeService**: Gestiona la lógica para tipos de pago (crear, restaurar, actualizar, eliminar, listar). Valida unicidad y soft delete.
+- **PredeterminedPriceService**: Gestiona la lógica para precios predeterminados (crear, restaurar, actualizar, eliminar, listar). Valida unicidad y soft delete.
 
-### **Model (Modelo)**
-- [ ] **History Model**: Modelo completo de historial médico
-- [ ] **DocumentType Model**: Tipos de documentos
-- [ ] **PaymentType Model**: Tipos de pago
-- [ ] **PredeterminedPrice Model**: Precios predeterminados
-- [ ] **History-Patient Relationship**: Relación con pacientes
+Los servicios devuelven siempre respuestas JSON apropiadas para la API y centralizan las reglas de negocio.
+# Requests (Form Requests)
 
-### **View (Vista/API)**
-- [ ] **History Controllers**: CRUD completo de historiales
-- [ ] **DocumentType Controllers**: Gestión de tipos de documento
-- [ ] **PaymentType Controllers**: Gestión de tipos de pago
-- [ ] **PredeterminedPrice Controllers**: Gestión de precios
-- [ ] **API Resources**: Transformación de datos para React
+Los Form Requests de este módulo validan los datos de entrada para la creación y actualización de las entidades principales. Cada uno está documentado con PHPDoc y define reglas y mensajes personalizados:
 
-### **Controller (Lógica de Negocio)**
-- [ ] **History Services**: Lógica de gestión de historiales
-- [ ] **DocumentType Services**: Lógica de tipos de documento
-- [ ] **PaymentType Services**: Lógica de tipos de pago
-- [ ] **PredeterminedPrice Services**: Lógica de precios
-- [ ] **Validation Services**: Validación de datos médicos
+- **StoreDocumentTypeRequest**: Valida la creación de tipos de documento (nombre único, requerido, descripción opcional).
+- **StorePaymentTypeRequest**: Valida la creación de tipos de pago (nombre único, requerido, descripción opcional).
+- **StorePredeterminedPriceRequest**: Valida la creación de precios predeterminados (nombre único, requerido, precio numérico opcional).
+- **UpdateDocumentTypeRequest**, **UpdatePaymentTypeRequest**, **UpdatePredeterminedPriceRequest**: Validan la actualización de cada entidad.
 
-## **Archivos Incluidos**
+Cada Form Request asegura que los datos enviados a la API cumplan con las reglas de negocio y formato requeridas.
+# Modelos
+
+Los modelos de este módulo representan las entidades principales de la configuración de historiales clínicos y están documentados con PHPDoc:
+
+- **DocumentType**
+  - Representa los tipos de documento.
+  - Campos: `id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`.
+  - Relaciones: usuarios, pacientes, terapeutas.
+  - Permite soft deletes y factorías.
+
+- **PaymentType**
+  - Representa los tipos de pago.
+  - Campos: `id`, `code`, `name`, `created_at`, `updated_at`, `deleted_at`.
+  - Relaciones: citas (appointments).
+  - Permite soft deletes y factorías.
+
+- **PredeterminedPrice**
+  - Representa precios predeterminados para servicios.
+  - Campos: `id`, `name`, `price`, `created_at`, `updated_at`, `deleted_at`.
+  - Relaciones: citas (appointments).
+  - Permite soft deletes y factorías.
+
+Cada modelo está documentado con PHPDoc en la clase y en sus métodos, describiendo su funcionalidad, campos y relaciones.
+# Controladores
+
+Los controladores de este módulo exponen endpoints RESTful para gestionar las entidades principales:
+
+- **DocumentTypeController**: Permite listar, crear, mostrar, actualizar y eliminar tipos de documento. Utiliza el servicio DocumentTypeService y aplica middleware para control de permisos.
+- **PaymentTypeController**: Permite listar, crear, mostrar, actualizar y eliminar tipos de pago. Utiliza el servicio PaymentTypeService y aplica middleware para control de permisos.
+- **PredeterminedPricesController**: Permite listar, crear, mostrar, actualizar y eliminar precios predeterminados. Utiliza el servicio PredeterminedPriceService y aplica middleware para control de permisos.
+
+Cada controlador está documentado con PHPDoc en la clase y en sus métodos, describiendo su funcionalidad, parámetros y retornos.
+# Módulo 6: Histories Configurations
+
+Este módulo gestiona la configuración de historiales clínicos, incluyendo tipos de documento, tipos de pago y precios predeterminados. Está compuesto por modelos, controladores, servicios y requests bien organizados y documentados.
+
+## Estructura de Carpetas
+
 ```
-06_histories_configurations/
-├── histories/
-│   ├── HistoryController.php
-│   ├── HistoryService.php
-│   ├── History.php (Model)
-│   └── Requests/ (StoreHistoryRequest, UpdateHistoryRequest)
-└── configurations/
-    ├── DocumentTypeController.php
-    ├── DocumentTypeService.php
-    ├── DocumentType.php (Model)
-    ├── PaymentTypeController.php
-    ├── PaymentTypeService.php
-    ├── PaymentType.php (Model)
-    ├── PredeterminedPricesController.php
-    ├── PredeterminedPriceService.php
-    ├── PredeterminedPrice.php (Model)
-    └── Requests/ (StoreDocumentTypeRequest, UpdatePaymentTypeRequest, etc.)
+modules/
+  06_histories_configurations/
+    configurations/
+      controlador/         # Controladores API
+      modelo/              # Modelos Eloquent
+      requests/            # Form Requests para validación
+      servicio/            # Servicios con lógica de negocio
 ```
 
-## **APIs a Desarrollar para React**
-- `GET /api/histories` - Listar historiales con paginación
-- `POST /api/histories` - Crear nuevo historial
-- `GET /api/histories/{id}` - Obtener historial específico
-- `PUT /api/histories/{id}` - Actualizar historial
-- `DELETE /api/histories/{id}` - Eliminar historial
-- `GET /api/histories/by-patient/{id}` - Historiales por paciente
-- `GET /api/document-types` - Listar tipos de documento
-- `POST /api/document-types` - Crear tipo de documento
-- `PUT /api/document-types/{id}` - Actualizar tipo de documento
-- `DELETE /api/document-types/{id}` - Eliminar tipo de documento
-- `GET /api/payment-types` - Listar tipos de pago
-- `POST /api/payment-types` - Crear tipo de pago
-- `PUT /api/payment-types/{id}` - Actualizar tipo de pago
-- `DELETE /api/payment-types/{id}` - Eliminar tipo de pago
-- `GET /api/predetermined-prices` - Listar precios predeterminados
-- `POST /api/predetermined-prices` - Crear precio predeterminado
-- `PUT /api/predetermined-prices/{id}` - Actualizar precio
-- `DELETE /api/predetermined-prices/{id}` - Eliminar precio
+## Modelos
 
-## **Tareas Específicas**
-1. **CRUD de Historiales**: Gestión completa de historiales médicos
-2. **Sistema de Configuraciones**: Tipos de documento, pago y precios
-3. **Relaciones Médicas**: Historial-Paciente-Diagnóstico
-4. **Validación Médica**: Validación de datos de historiales
-5. **Paginación**: Listado paginado con filtros
-6. **Exportación**: Exportar historiales a PDF
-7. **Búsqueda**: Búsqueda en historiales médicos
-8. **Estadísticas**: Estadísticas de historiales y configuraciones
+- **DocumentType**: Representa los tipos de documento. Relacionado con usuarios, pacientes y terapeutas. Permite soft deletes.
+- **PaymentType**: Representa los tipos de pago. Relacionado con citas. Permite soft deletes.
+- **PredeterminedPrice**: Representa precios predeterminados para servicios. Relacionado con citas. Permite soft deletes.
 
-## **Campos del Modelo History**
-- Paciente (relación)
-- Terapeuta (relación)
-- Fecha de consulta
-- Motivo de consulta
-- Diagnóstico
-- Tratamiento
-- Observaciones
-- Próxima cita
-- Estado del historial
-- Archivos adjuntos
+## Controladores
 
-## **Campos del Modelo DocumentType**
-- Código de documento
-- Nombre del documento
-- Descripción
-- Es obligatorio (boolean)
-- Formato de validación
+- **DocumentTypeController**: CRUD para tipos de documento. Usa `DocumentTypeService` y aplica middleware de permisos.
+- **PaymentTypeController**: CRUD para tipos de pago. Usa `PaymentTypeService` y aplica middleware de permisos.
+- **PredeterminedPricesController**: CRUD para precios predeterminados. Usa `PredeterminedPriceService` y aplica middleware de permisos.
 
-## **Campos del Modelo PaymentType**
-- Código de pago
-- Nombre del tipo de pago
-- Descripción
-- Es activo (boolean)
-- Comisión (porcentaje)
+## Servicios
 
-## **Campos del Modelo PredeterminedPrice**
-- Nombre del servicio
-- Descripción
-- Precio base
-- Duración
-- Categoría
-- Es activo (boolean)
+- **DocumentTypeService**: Lógica de negocio para tipos de documento (crear, restaurar, actualizar, eliminar, listar).
+- **PaymentTypeService**: Lógica de negocio para tipos de pago.
+- **PredeterminedPriceService**: Lógica de negocio para precios predeterminados.
 
-## **Dependencias**
-- Laravel Eloquent para relaciones
-- Laravel Validation para requests médicos
-- Laravel Resources para APIs
-- DomPDF para exportación de PDF
-- Laravel Storage para archivos adjuntos
+## Requests (Validaciones)
 
-## **Entregables**
-- [ ] CRUD completo de historiales
-- [ ] Sistema de configuraciones funcional
-- [ ] Relaciones médicas establecidas
-- [ ] Exportación de PDF implementada
-- [ ] APIs documentadas y testeadas
-- [ ] Validación médica robusta
-- [ ] Integración con React lista
-- [ ] Tests unitarios y de integración 
+- **StoreDocumentTypeRequest**: Valida la creación de tipos de documento.
+- **StorePaymentTypeRequest**: Valida la creación de tipos de pago.
+- **StorePredeterminedPriceRequest**: Valida la creación de precios predeterminados.
+- **UpdateDocumentTypeRequest**, **UpdatePaymentTypeRequest**, **UpdatePredeterminedPriceRequest**: Validan la actualización de cada entidad.
+
+## Rutas API
+
+Las rutas principales se encuentran en `routes/api.php`:
+
+```php
+Route::apiResource('document-types', DocumentTypeController::class);
+Route::apiResource('payment-types', PaymentTypeController::class);
+Route::apiResource('predetermined-prices', PredeterminedPricesController::class);
+```
+
+## Notas
+
+- Todos los controladores y modelos están documentados con PHPDoc.
+- Se utiliza soft delete en todas las entidades principales.
+- Los servicios centralizan la lógica de negocio para mantener los controladores delgados.
+- Los Form Requests aseguran la validación robusta de los datos de entrada.
+
+---
+

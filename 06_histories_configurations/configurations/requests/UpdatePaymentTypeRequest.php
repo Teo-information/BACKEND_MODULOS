@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\DocumentType;
+namespace Modules\HistoriesConfigurations\Configurations\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateDocumentTypeRequest extends FormRequest
+class UpdatePaymentTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +30,7 @@ class UpdateDocumentTypeRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'El tipo de documento ya está registrado.',
+            'name.unique' => 'El tipo de pago ya está registrado.',
         ];
     }
 }

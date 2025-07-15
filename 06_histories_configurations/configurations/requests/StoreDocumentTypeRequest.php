@@ -1,15 +1,22 @@
 <?php
 
-namespace App\Http\Requests\DocumentType;
+namespace Modules\HistoriesConfigurations\Configurations\Requests;
 
 use App\Models\DocumentType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Form Request para validar la creación de un tipo de documento.
+ *
+ * Valida que el nombre sea único (ignorando eliminados), requerido y de longitud máxima 255.
+ * Permite descripción opcional de hasta 500 caracteres.
+ */
 class StoreDocumentTypeRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para hacer esta petición.
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -17,9 +24,8 @@ class StoreDocumentTypeRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Reglas de validación para la creación de tipo de documento.
+     * @return array
      */
     public function rules(): array
     {
@@ -34,6 +40,10 @@ class StoreDocumentTypeRequest extends FormRequest
         ];
     }
 
+    /**
+     * Mensajes personalizados para las reglas de validación.
+     * @return array
+     */
     public function messages()
     {
         return [

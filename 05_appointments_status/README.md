@@ -1,122 +1,106 @@
-# Módulo 05 - Citas y Estados 📅
+# Módulo 05 - Gestión de Citas y Agenda Médica 🗓️
 
-## **Responsabilidades**
-Modelo Appointment completo, modelo AppointmentStatus, CRUD de citas, filtros por fecha, estados de citas, calendario de citas, sistema de tickets y gestión de habitaciones.
+## Índice
+1. [Introducción](#introducción)
+2. [Estructura del Módulo](#estructura-del-módulo)
+3. [Submódulos y sus Historias de Usuario](#submódulos-y-sus-historias-de-usuario)
+    - [appointments/ (HU01, HU03)](#appointments)
+    - [statuses/ (HU02)](#statuses)
+    - [tickets/ (HU04)](#tickets)
+    - [rooms/ (HU05)](#rooms)
+4. [Diagrama de la Estructura](#diagrama-de-la-estructura)
+5. [Notas y Recomendaciones](#notas-y-recomendaciones)
 
-## **Meta: Lograr MVC con APIs para React**
+---
 
-### **Model (Modelo)**
-- [ ] **Appointment Model**: Modelo completo de cita con relaciones
-- [ ] **AppointmentStatus Model**: Estados de citas (pendiente, confirmada, cancelada, etc.)
-- [ ] **Ticket Model**: Sistema de tickets para citas
-- [ ] **Room Model**: Gestión de habitaciones/consultorios
+## Introducción
+Este módulo es responsable de la gestión integral de las citas médicas y la agenda de un centro de salud. Permite administrar el ciclo completo de una cita: desde su creación, visualización y actualización, hasta la gestión de estados, generación de tickets y asignación de habitaciones o consultorios. La organización en submódulos facilita el trabajo colaborativo, la escalabilidad y el mantenimiento del sistema.
 
-### **View (Vista/API)**
-- [ ] **Appointment Controllers**: CRUD completo de citas
-- [ ] **Status Controllers**: Gestión de estados de citas
-- [ ] **Ticket Controllers**: Sistema de tickets
-- [ ] **Calendar Controllers**: Calendario de citas
-- [ ] **API Resources**: Transformación de datos para React
+---
 
-### **Controller (Lógica de Negocio)**
-- [ ] **Appointment Services**: Lógica de gestión de citas
-- [ ] **Status Services**: Lógica de estados
-- [ ] **Ticket Services**: Lógica de tickets
-- [ ] **Calendar Services**: Lógica de calendario
-- [ ] **Validation Services**: Validación de horarios y disponibilidad
+## Estructura del Módulo
+La carpeta `05_appointments_status` está organizada en los siguientes submódulos:
 
-## **Archivos Incluidos**
 ```
 05_appointments_status/
-├── appointments/
-│   ├── AppointmentController.php
-│   ├── AppointmentService.php
-│   ├── Appointment.php (Model)
-│   ├── AppointmentStatusController.php
-│   ├── AppointmentStatusService.php
-│   ├── AppointmentStatus.php (Model)
-│   └── Requests/ (StoreAppointmentRequest, UpdateAppointmentRequest, etc.)
-├── tickets/
-│   ├── TicketController.php
-│   ├── TicketService.php
-│   └── Requests/ (TicketRequest)
-└── rooms/
-    ├── RoomController.php
-    ├── RoomService.php
-    └── Room.php (Model)
+│
+├── appointments/   # Gestión y visualización de citas (HU01, HU03)
+├── statuses/       # Gestión de estados de cita (HU02)
+├── tickets/        # Gestión de tickets para citas (HU04)
+├── rooms/          # Gestión de habitaciones/consultorios (HU05)
+└── README.md       # Documentación general del módulo
 ```
 
-## **APIs a Desarrollar para React**
-- `GET /api/appointments` - Listar citas con paginación
-- `POST /api/appointments` - Crear nueva cita
-- `GET /api/appointments/{id}` - Obtener cita específica
-- `PUT /api/appointments/{id}` - Actualizar cita
-- `DELETE /api/appointments/{id}` - Eliminar cita
-- `GET /api/appointments/calendar` - Calendario de citas
-- `GET /api/appointments/by-date/{date}` - Citas por fecha
-- `GET /api/appointments/by-therapist/{id}` - Citas por terapeuta
-- `GET /api/appointments/by-patient/{id}` - Citas por paciente
-- `PUT /api/appointments/{id}/status` - Cambiar estado de cita
-- `GET /api/appointment-statuses` - Listar estados disponibles
-- `POST /api/appointment-statuses` - Crear nuevo estado
-- `GET /api/tickets` - Listar tickets
-- `POST /api/tickets` - Crear ticket
-- `GET /api/rooms` - Listar habitaciones
-- `POST /api/rooms` - Crear habitación
-- `GET /api/appointments/statistics` - Estadísticas de citas
+Cada submódulo agrupa los archivos y la lógica relacionada con una funcionalidad específica, alineada con una historia de usuario principal.
 
-## **Tareas Específicas**
-1. **CRUD de Citas**: Gestión completa de citas médicas
-2. **Sistema de Estados**: Estados de citas con transiciones
-3. **Calendario de Citas**: Vista de calendario con filtros
-4. **Sistema de Tickets**: Tickets para seguimiento de citas
-5. **Gestión de Habitaciones**: Consultorios y disponibilidad
-6. **Validación de Horarios**: Verificación de disponibilidad
-7. **Filtros Avanzados**: Por fecha, terapeuta, paciente, estado
-8. **Notificaciones**: Recordatorios de citas
-9. **Estadísticas**: Estadísticas de citas y ocupación
+---
 
-## **Campos del Modelo Appointment**
-- Paciente (relación)
-- Terapeuta (relación)
-- Fecha y hora
-- Duración
-- Estado (pendiente, confirmada, cancelada, completada)
-- Tipo de consulta
-- Habitación/consultorio
-- Observaciones
-- Precio
-- Ticket asociado
+## Submódulos y sus Historias de Usuario
 
-## **Campos del Modelo AppointmentStatus**
-- Nombre del estado
-- Color (para UI)
-- Descripción
-- Es final (boolean)
-- Permite cancelación (boolean)
+### <a name="appointments"></a>appointments/ — HU01 y HU03
 
-## **Estados de Citas**
-- Pendiente (amarillo)
-- Confirmada (verde)
-- En progreso (azul)
-- Completada (gris)
-- Cancelada (rojo)
-- No asistió (naranja)
+#### HU01 - Gestión de Citas: CRUD Completo
+Permite crear, listar, actualizar y eliminar citas médicas, con validaciones, filtros y paginación. Es el núcleo de la agenda, asegurando que cada cita tenga paciente, terapeuta, fecha, hora, estado y motivo, y evitando solapamientos.
 
-## **Dependencias**
-- Laravel Eloquent para relaciones
-- Laravel Validation para requests
-- Laravel Resources para APIs
-- Carbon para manejo de fechas
-- Laravel Notifications para recordatorios
+#### HU03 - Visualización de Calendario de Citas
+Proporciona la lógica y los endpoints para mostrar un calendario visual de citas, con filtros por terapeuta, paciente, estado y fechas, y actualización en tiempo real. Facilita la gestión visual de la carga de trabajo y la disponibilidad.
 
-## **Entregables**
-- [ ] CRUD completo de citas
-- [ ] Sistema de estados funcional
-- [ ] Calendario de citas implementado
-- [ ] Sistema de tickets operativo
-- [ ] Gestión de habitaciones establecida
-- [ ] Validación de horarios robusta
-- [ ] APIs documentadas y testeadas
-- [ ] Integración con React lista
-- [ ] Tests unitarios y de integración 
+**Archivos típicos:**
+- Appointment.php, AppointmentController.php, AppointmentService.php
+- AppointmentsPaginatedByDateRequest.php, CompletedAppointmentsCalendarByDateRequest.php, etc.
+
+---
+
+### <a name="statuses"></a>statuses/ — HU02
+
+#### HU02 - Gestión de Estados de Cita
+Permite definir, actualizar y validar los estados de una cita (pendiente, confirmada, completada, cancelada, etc.), así como controlar las transiciones válidas y registrar auditoría de cambios. Es clave para reflejar el flujo real de atención.
+
+**Archivos típicos:**
+- AppointmentStatus.php, AppointmentStatusController.php, AppointmentStatusService.php
+- StoreAppointmentStatusRequest.php, UpdateAppointmentStatusRequest.php
+
+---
+
+### <a name="tickets"></a>tickets/ — HU04
+
+#### HU04 - Gestión de Tickets para Citas
+Permite generar y gestionar tickets únicos asociados a cada cita, incluyendo información relevante (paciente, terapeuta, fecha, estado, monto, etc.), control de pagos y seguimiento. Facilita la trazabilidad y la gestión administrativa.
+
+**Archivos típicos:**
+- TicketController.php, TicketRequest.php, TicketService.php
+
+---
+
+### <a name="rooms"></a>rooms/ — HU05
+
+#### HU05 - Gestión de Habitaciones/Consultorios
+Permite crear, editar y eliminar habitaciones o consultorios, asignarlos a citas y validar la disponibilidad para evitar solapamientos. Optimiza el uso de los espacios físicos y previene conflictos de agenda.
+
+**Archivos típicos:**
+- (Por implementar: Room.php, RoomController.php, RoomService.php, etc.)
+
+---
+
+## Diagrama de la Estructura
+
+```mermaid
+graph TD
+  A[appointments] -->|HU01| CRUD_Citas
+  A -->|HU03| Calendario_Citas
+  B[statuses] -->|HU02| Estados_Cita
+  C[tickets] -->|HU04| Tickets_Citas
+  D[rooms] -->|HU05| Habitaciones_Consultorios
+```
+
+---
+
+## Notas y Recomendaciones
+- Cada submódulo puede tener su propio README.md para detallar aspectos técnicos, endpoints y flujos específicos.
+- Esta estructura permite que equipos diferentes trabajen en paralelo y facilita la escalabilidad del sistema.
+- Las historias de usuario y checklists (ver más arriba en este archivo) sirven como guía para el desarrollo, pruebas y validación de funcionalidades.
+- Si se agregan nuevas funcionalidades, simplemente se crea un nuevo submódulo o se amplía el existente.
+
+---
+
+**¡Esta organización está pensada para que el desarrollo sea claro, ordenado y colaborativo!** 

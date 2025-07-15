@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DocumentType;
+namespace Modules\HistoriesConfigurations\Configurations\Servicio;
 
 use App\Models\DocumentType;
 use Illuminate\Http\JsonResponse;

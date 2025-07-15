@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\PaymentType;
+namespace Modules\HistoriesConfigurations\Configurations\Servicio;
 
 use App\Models\PaymentType;
 use Illuminate\Http\JsonResponse;

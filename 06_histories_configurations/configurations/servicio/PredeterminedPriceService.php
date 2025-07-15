@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\PredeterminedPrice;
+namespace Modules\HistoriesConfigurations\Configurations\Servicio;
 
 use App\Models\PredeterminedPrice;
 use Illuminate\Http\JsonResponse;
